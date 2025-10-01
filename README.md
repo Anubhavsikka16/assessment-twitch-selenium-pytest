@@ -1,17 +1,27 @@
-# assessment-twitch-selenium-pytest
 
-A GIF and a .mp4 recoeding showing the test running locally is added in the project framework with names: selenium_test.gif and selenium_recording.mp4
-Test can be run using 'make report' command from the project root folder
-An allure report is generated after test run which will automatically run in the browser once the test completes. A screenshot is attached to the report if in case test fails.
-Screenshot of one streamer will be generated in screenshots folder.
 
-Test Case flow: 
- a) Open twitch.tv
- b) Click in the search box and enter 'StarCraft II'
- c) Click on search icon
- d) Scroll down the page twice 
- e) Click on the video stream 
- d) Take the screenshot:
-   i) Of the video streamer page with video playing
-   ii) or the subscribe to watch video page
+## Twitch Selenium Pytest Framework
 
+This project automates testing of Twitch.tv using **Selenium with Pytest** and provides **Allure reports** for easy visualization.
+
+---
+
+### 🎥 Test Artifacts
+
+- **Local test run recordings:**
+  - `selenium_test.gif` → GIF showing the test running locally.
+  - `selenium_recording.mp4` → Video recording of the test execution.
+- **Allure Report:**  
+  - Generated automatically after the test run.  
+  - Opens in the browser once the test completes.
+  - Screenshots are attached automatically for any failed test.
+- **Screenshots folder:**  
+  - Stores screenshots for each streamer page.
+
+---
+
+### 🏃 Test Execution
+
+To run the test, use the following command from the project root:
+
+make report
