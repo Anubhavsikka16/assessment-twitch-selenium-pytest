@@ -1,0 +1,6 @@
+[32mINFO    [0m business_pages.base_page:base_page.py:112 Clicked element is: search_input_box_XPATH
+[32mINFO    [0m business_pages.base_page:base_page.py:121  Typed element is: search_input_box_XPATH and value is: StarCraft II
+[32mINFO    [0m business_pages.base_page:base_page.py:163 Highlighted element is: search_button_XPATH
+[32mINFO    [0m business_pages.base_page:base_page.py:112 Clicked element is: search_button_XPATH
+[32mINFO    [0m business_pages.base_page:base_page.py:112 Clicked element is: click_channel_XPATH
+[32mINFO    [0m business_pages.base_page:base_page.py:112 Clicked element is: show_all_videos_button_XPATH

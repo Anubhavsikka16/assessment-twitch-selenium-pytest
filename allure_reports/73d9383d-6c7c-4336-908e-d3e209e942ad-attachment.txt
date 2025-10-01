@@ -1,0 +1,3 @@
+URL of the streamer page is:  https://www.twitch.tv/search?term=StarCraft%20II
+Current URL before clicking on video is:  https://www.twitch.tv/search?term=StarCraft%20II
+✅ Video is playing. Capturing screenshot.
