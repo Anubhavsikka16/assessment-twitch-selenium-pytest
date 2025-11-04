@@ -5,16 +5,45 @@ phases:
     runtime-versions:
       python: 3.10
     commands:
-      - echo Installing dependencies for pytest...
+      - echo "----- Installing system dependencies -----"
+      - apt-get update
+      - apt-get install -y unzip curl wget xvfb
+      - echo "Installing Google Chrome..."
+      - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      - apt install -y ./google-chrome-stable_current_amd64.deb
+      - echo "Installing ChromeDriver..."
+      - CHROME_DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
+      - wget https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip
+      - unzip chromedriver_linux64.zip -d /usr/local/bin/
+      - chmod +x /usr/local/bin/chromedriver
+      - echo "Chrome and ChromeDriver installed successfully"
+      - echo "----- Installing Python dependencies -----"
+      - pip install --upgrade pip
       - pip install -r requirements.txt
-      - echo Dependencies installed.
+      - pip install pytest pytest-html
+
+  pre_build:
+    commands:
+      - echo "----- Checking versions -----"
+      - google-chrome --version
+      - chromedriver --version
+      - python --version
+      - pytest --version
 
   build:
     commands:
-      - echo Running tests...
-      - pytest --html=report.html --self-contained-html
+      - echo "----- Starting Selenium + Pytest tests -----"
+      - mkdir -p reports
+      - pytest --html=reports/report.html --self-contained-html --maxfail=1 --disable-warnings
+      - echo "Tests execution completed!"
+
+  post_build:
+    commands:
+      - echo "----- Post build: listing generated reports -----"
+      - ls -la reports/
+      - echo "Build completed on `date`"
 
 artifacts:
   files:
-    - report.html
- 
+    - reports/report.html
+  discard-paths: yes
