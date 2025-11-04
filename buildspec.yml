@@ -41,7 +41,7 @@ phases:
     commands:
       - echo "----- Post build: listing generated reports -----"
       - ls -la reports/
-      - echo "Build completed on `date`"
+      - echo "Build completed on $(date)"
 
 artifacts:
   files:
