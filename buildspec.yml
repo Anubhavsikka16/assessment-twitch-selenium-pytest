@@ -21,6 +21,11 @@ phases:
       - unzip -o chromedriver.zip -d /usr/bin/
       - chmod +x /usr/bin/chromedriver
       - echo "Chrome and ChromeDriver installed successfully"
+      - echo "Installing Allure CLI"
+      - wget https://github.com/allure-framework/allure2/releases/latest/download/allure-2.27.0.zip -O allure.zip
+      - unzip allure.zip -d /opt/
+      - export PATH=$PATH:/opt/allure-2.27.0/bin
+      - allure --version
       - echo "----- Installing Python dependencies -----"
       - pip install --upgrade pip
       - pip install -r requirements.txt
@@ -35,21 +40,20 @@ phases:
 
   build:
     commands:
-      - echo "----- Starting Selenium + Pytest tests in headless mode -----"
-      - mkdir -p reports
-      - Xvfb :99 -screen 0 1920x1080x24 & export DISPLAY=:99
-      - export PATH=$PATH:/usr/bin/
-      - echo "Running pytest now..."
-      - pytest --maxfail=1 --disable-warnings --html=reports/report.html --self-contained-html -v || echo "⚠️ Tests failed, continuing to next step."
-      - echo "Tests execution completed!"
+      - echo "Running Pytest with Allure"
+      - mkdir -p allure-results
+      - pytest --alluredir=allure-results --disable-warnings -v
+      - echo "-----Generating Allure HTML report-----"
+      - allure generate allure-results -o allure-report --clean
 
 
 
   post_build:
     commands:
-      - echo "----- Post-build actions -----"
-      - ls -la reports/
-      - echo "Build completed on $(date)"
+      - echo "Uploading Allure report to S3..."
+      - aws s3 cp allure-report s3://your-bucket-name/allure-report/ --recursive
+      - echo "Allure report uploaded successfully!"
+
 
 artifacts:
   files:
