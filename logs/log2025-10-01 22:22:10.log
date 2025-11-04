@@ -1,0 +1,5 @@
+2025-10-01 22:22:13,599 - business_pages.base_page - INFO - Clicked element is: search_input_box_XPATH
+2025-10-01 22:22:13,703 - business_pages.base_page - INFO -  Typed element is: search_input_box_XPATH and value is: StarCraft II
+2025-10-01 22:22:13,716 - business_pages.base_page - INFO - Highlighted element is: search_button_XPATH
+2025-10-01 22:22:14,248 - business_pages.base_page - INFO - Clicked element is: search_button_XPATH
+2025-10-01 22:22:19,476 - business_pages.base_page - INFO - Clicked element is: show_all_videos_button_XPATH

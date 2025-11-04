@@ -1,5 +1,6 @@
 allure-pytest==2.13.5
 allure-python-commons==2.13.5
+boto3==1.40.65
 chromedriver-py==141.0.7390.37b0
 configparser==7.2.0
 configreader==0.0.6

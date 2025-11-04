@@ -51,5 +51,5 @@ def get_browser(request):
     driver.get(readConfig("basic info", "testsiteurl"))
     driver.maximize_window()
     driver.implicitly_wait(10)
-    yield driver
-    driver.quit()
+    # yield driver
+    # driver.quit()
