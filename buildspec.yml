@@ -51,7 +51,7 @@ phases:
   post_build:
     commands:
       - echo "Uploading Allure report to S3..."
-      - aws s3 cp allure-report s3://your-bucket-name/allure-report/ --recursive
+      - aws s3 cp allure-report s3://test-bucket-selenium-pytest/allure-report/ --recursive
       - echo "Allure report uploaded successfully!"
 
 
