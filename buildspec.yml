@@ -39,7 +39,7 @@ phases:
 
   post_build:
     commands:
-      - echo "----- Post build: listing generated reports -----"
+      - echo "----- Post-build actions -----"
       - ls -la reports/
       - echo "Build completed on $(date)"
 
