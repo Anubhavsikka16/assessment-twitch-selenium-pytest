@@ -49,10 +49,15 @@ phases:
 
 
   post_build:
-    commands:
-      - echo "Uploading Allure report to S3..."
-      - aws s3 cp allure-report s3://test-bucket-selenium-pytest/allure-report/ --recursive
-      - echo "Allure report uploaded successfully!"
+  commands:
+    - echo "-----Generating Allure report-----"
+    - allure generate allure-results --clean -o allure-report
+    - ls -la allure-report || echo "Allure report not found!"
+    - echo "-----Uploading report to S3-----"
+    - aws configure set region ap-south-1
+    - aws s3 cp allure-report s3://test-bucket-selenium-pytest/allure-report/ --recursive --region ap-south-1 || echo "S3 upload skipped"
+    - echo "Build completed on $(date)"
+
 
 
 artifacts:
