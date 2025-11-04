@@ -13,7 +13,7 @@ phases:
       - apt install -y ./google-chrome-stable_current_amd64.deb
       - echo "Installing ChromeDriver..."
       - CHROME_DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
-      - echo "ChromeDriver version: ${CHROME_DRIVER_VERSION}"
+      - wget https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip
       - wget -O chromedriver.zip "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip"
       - echo "Verifying if chromedriver.zip exists..."
       - ls -lh chromedriver.zip
@@ -25,7 +25,6 @@ phases:
       - pip install --upgrade pip
       - pip install -r requirements.txt
       - pip install pytest pytest-html selenium
-
   pre_build:
     commands:
       - echo "----- Checking versions -----"
