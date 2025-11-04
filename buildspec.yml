@@ -5,40 +5,60 @@ phases:
     runtime-versions:
       python: 3.10
     commands:
-      - echo "Installing dependencies..."
+      - echo "----- INSTALL PHASE -----"
       - apt-get update
       - apt-get install -y unzip curl wget default-jre xvfb
+      - echo "Installing Google Chrome..."
       - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
       - apt install -y ./google-chrome-stable_current_amd64.deb
+
+      - echo "Installing ChromeDriver..."
       - CHROME_DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
-      - wget https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip
-      - unzip chromedriver_linux64.zip -d /usr/local/bin/
+      - curl -sS -o /tmp/chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip
+      - unzip -o /tmp/chromedriver_linux64.zip -d /usr/local/bin/
       - chmod +x /usr/local/bin/chromedriver
+      - chromedriver --version || echo "ChromeDriver not found!"
+
+      - echo "Installing Python dependencies..."
       - pip install --upgrade pip
       - pip install -r requirements.txt
       - pip install pytest allure-pytest
+
+      - echo "Installing Allure CLI..."
       - wget https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.27.0/allure-commandline-2.27.0.zip -O allure.zip
-      - unzip allure.zip -d /opt/
+      - unzip -o allure.zip -d /opt/
       - export PATH=$PATH:/opt/allure-2.27.0/bin
       - allure --version
 
+  pre_build:
+    commands:
+      - echo "----- PRE-BUILD PHASE -----"
+      - echo "Verifying Chrome and Chromedriver versions..."
+      - google-chrome --version
+      - chromedriver --version
+
   build:
     commands:
-      - echo "Running tests..."
+      - echo "----- BUILD (TEST EXECUTION) PHASE -----"
       - mkdir -p allure-results
-      - xvfb-run pytest --alluredir=allure-results --disable-warnings --maxfail=1 || echo "Tests completed with some failures"
+      - echo "Running pytest with Allure reporting..."
+      - pytest --alluredir=allure-results --maxfail=1 --disable-warnings || echo "Tests completed with failures"
+      - ls -la allure-results || echo "No allure-results found"
 
   post_build:
     commands:
-      - echo "Generating Allure report"
-      - allure generate allure-results --clean -o allure-report
+      - echo "----- POST-BUILD PHASE -----"
+      - echo "Generating Allure HTML report..."
+      - allure generate allure-results --clean -o allure-report || echo "Allure generation failed"
       - ls -la allure-report || echo "Allure report not found!"
-      - echo "Uploading report to S3..."
+      - echo "Uploading Allure report to S3..."
       - aws configure set region ap-south-1
       - aws s3 cp allure-report s3://test-bucket-selenium-pytest/allure-report/ --recursive --region ap-south-1 || echo "S3 upload skipped"
-      - echo "Build completed on $(date)"
+      - echo "Build completed successfully on $(date)"
 
 artifacts:
   files:
     - allure-report/**
-  discard-paths: yes
+    - allure-results/**
+    - "**/pytest-report.html"
+  discard-paths: no
