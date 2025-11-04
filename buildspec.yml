@@ -49,7 +49,7 @@ phases:
     commands:
       - echo "----- POST-BUILD PHASE -----"
       - echo "Generating Allure HTML report..."
-      - allure generate allure-results --clean -o allure-report || echo "Allure generation failed"
+      - allure serve allure-results --clean -o allure-report || echo "Allure generation failed"
       - ls -la allure-report || echo "Allure report not found!"
       - echo "Uploading Allure report to S3..."
       - aws configure set region ap-south-1
