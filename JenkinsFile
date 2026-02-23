@@ -24,7 +24,7 @@ pipeline {
             steps {
                 sh '''
                     cd tests
-                    pytest --alluredir=../allure-results
+                    pytest tests --alluredir=../allure-results
                 '''
             }
         }
