@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+
+    environment {
+        VENV_DIR = 'venv'
+        PYTHON = "${VENV_DIR}/bin/python"
+        PIP = "${VENV_DIR}/bin/pip"
+        PYTEST = "${VENV_DIR}/bin/pytest"
+    }
+
+    stages {
+        stage('Setup Python Environment') {
+            steps {
+                sh '''
+                    python3 -m venv $VENV_DIR
+                    $PYTHON -m pip install --upgrade pip
+                    
+                    $PIP install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh '''
+                    make report
+                '''
+            }
+        }
+
+        stage('Generate Allure Report') {
+            steps {
+                sh '''
+                    allure generate allure-results -o allure-report --clean
+                '''
+            }
+        }
+
+        stage('Publish Reports') {
+            steps {
+                allure includeProperties: false, 
+                jdk: '', reportBuildPolicy: 'ALWAYS', 
+                results: [[path: 'allure-results']]
+                archiveArtifacts artifacts: 'allure-report/**', allowEmptyArchive: true
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline execution completed.'
+        }
+        cleanup {
+            sh 'rm -rf $VENV_DIR'
+        }
+    }
+}
