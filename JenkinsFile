@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        VENV_DIR = 'venv'
+        VENV_DIR = '.venv'
         PYTHON = "${VENV_DIR}/bin/python"
         PIP = "${VENV_DIR}/bin/pip"
         PYTEST = "${VENV_DIR}/bin/pytest"
