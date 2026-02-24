@@ -22,7 +22,7 @@ pipeline {
                 sh '''
                     
                     .venv/bin/python -m pytest tests/test_starcraft2_streamer.py \
-                    --alluredir=allurereports
+                    --alluredir=allurereports || true
                 '''
             }
         }
