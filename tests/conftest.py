@@ -35,11 +35,8 @@ def get_browser(request):
 
     options = Options()
     options.add_experimental_option("mobileEmulation", mobile_emulation)
-    options.add_argument(
-    "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/140.0.0.0 Safari/537.36"
-)
+    options.add_argument('--headless=new')
+
 
     driver = webdriver.Chrome(options=options)
     
