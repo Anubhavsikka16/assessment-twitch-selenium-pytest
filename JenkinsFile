@@ -20,7 +20,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
-                    cd assessment-twitch-selenium-pytest 
+                    
                     .venv/bin/python -m pytest tests/test_starcraft2_streamer.py \
                     --alluredir=allurereports
                 '''
